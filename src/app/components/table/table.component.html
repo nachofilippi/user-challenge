@@ -1,0 +1,26 @@
+<ng-container *ngIf="data; else emptyTable">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="text-capitalize" cl *ngFor="let h of data?.headers">
+          {{ h }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of data.body">
+        <td class="text-truncate" *ngFor="let value of c">
+          {{ value }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+<ng-template #emptyTable>
+  <div
+    class="d-flex flex-column align-items-center justify-content-center h-100"
+  >
+    <div class="empty-image"></div>
+    <span class="fs-3 fw-semibold mt-3">No results</span>
+  </div>
+</ng-template>

@@ -1,0 +1,10 @@
+td {
+  max-width: 180px;
+}
+
+.empty-image {
+  background: url('../../../assets/images/no-results.png') no-repeat center;
+  height: 220px;
+  width: 220px;
+  background-size: cover;
+}

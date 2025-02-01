@@ -2,59 +2,58 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
 } from '@angular/core';
-import { UsersService } from '../../../services/users.service';
-import { TableModule } from '../../components/table/table.module';
-import { UnsubscribeService } from '../../../services/unsubscribe.service';
 import { takeUntil } from 'rxjs';
+import { UnsubscribeService } from '../../../services/unsubscribe.service';
+import { formatPostTable } from '../../components/table/table.helper';
 import { Table } from '../../components/table/table.model';
-import { formatUserTable } from '../../components/table/table.helper';
+import { PostsService } from '../../../services/posts.service';
 import { CommonModule } from '@angular/common';
+import { TableModule } from '../../components/table/table.module';
+import { Post } from '../../../models/post.model';
 import { SearchBarComponent } from '../../components/searchbar/searchbar.component';
-import { User } from '../../../models/user.model';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
+  selector: 'app-posts',
+  templateUrl: './posts.component.html',
   imports: [TableModule, CommonModule, SearchBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersComponent implements OnInit {
+export class PostsComponent {
   public loadingTable = true;
   public table?: Table;
-  public originalTable?: User[];
+  public originalTable?: Post[];
 
   constructor(
-    private usersService: UsersService,
+    private postsService: PostsService,
     private readonly unsubscribe$: UnsubscribeService,
     private cdt: ChangeDetectorRef
   ) {}
 
   public ngOnInit() {
-    this.usersService
-      .getAllUsers()
+    this.postsService
+      .getAllPosts()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((users) => {
-        this.originalTable = users;
-        this.table = formatUserTable(users);
+      .subscribe((posts) => {
+        this.originalTable = posts;
+        this.table = formatPostTable(posts);
         this.loadingTable = false;
         this.cdt.markForCheck();
       });
   }
 
   /**
-   * Filter users by name field on the table component using the searchValue from the searchbar component
+   * Filter posts by title field on the table component using the searchValue from the searchbar component
    * @param searchValue string
    * @returns void
    */
-  public filterUsers(searchValue: string): void {
+  public filterPosts(searchValue: string): void {
     const tableFiltered =
       this.originalTable?.filter((field) =>
-        field.name.toLowerCase().includes(searchValue.toLowerCase())
+        field.title.toLowerCase().includes(searchValue.toLowerCase())
       ) || [];
     this.table = tableFiltered.length
-      ? formatUserTable(tableFiltered)
+      ? formatPostTable(tableFiltered)
       : undefined;
     this.cdt.detectChanges();
   }
