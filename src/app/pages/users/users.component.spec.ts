@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UsersComponent } from './users.component';
 
@@ -13,8 +12,6 @@ describe('UsersComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         UsersComponent,
-        ReactiveFormsModule,
-        FormsModule,
         RouterModule,
         CommonModule,
         BrowserAnimationsModule,

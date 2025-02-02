@@ -1,7 +1,12 @@
 export interface Table {
   headers: string[];
-  body: any[];
+  body: TableBody[][];
   type: TableTypes;
+}
+
+export interface TableBody {
+  value: string;
+  type: keyof typeof TableTypes;
 }
 
 export enum TableTypes {

@@ -8,9 +8,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let c of data.body">
-        <td class="text-truncate" *ngFor="let value of c">
-          {{ value }}
+      <tr *ngFor="let b of data?.body" (click)="openDialog(b[0].value)">
+        <td class="text-truncate" *ngFor="let item of b">
+          {{ item.value }}
         </td>
       </tr>
     </tbody>

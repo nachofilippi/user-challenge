@@ -1,0 +1,32 @@
+<div class="d-flex gap-2 flex-column w-100">
+  <div class="d-flex">
+    <div class="fw-semibold w-25">Id</div>
+    <span class="fw-normal w-75 ms-3">{{ user?.id }}</span>
+  </div>
+  <div class="d-flex">
+    <div class="fw-semibold w-25">Name</div>
+    <span class="fw-normal w-75 ms-3">{{ user?.name }}</span>
+  </div>
+  <div class="d-flex">
+    <div class="fw-semibold w-25">Username</div>
+    <span class="fw-normal w-75 ms-3">{{ user?.username }}</span>
+  </div>
+  <div class="d-flex">
+    <div class="fw-semibold w-25">Company</div>
+    <span class="fw-normal w-75 ms-3">{{ user?.company?.name }}</span>
+  </div>
+  <div class="d-flex">
+    <div class="fw-semibold w-25">Address</div>
+    <span class="fw-normal w-75 ms-3">{{
+      user ? (user.address | address) : '-'
+    }}</span>
+  </div>
+  <div class="d-flex">
+    <div class="fw-semibold w-25">Phone</div>
+    <span class="fw-normal w-75 ms-3">{{ user?.phone }}</span>
+  </div>
+  <div class="d-flex">
+    <div class="fw-semibold w-25">Website</div>
+    <span class="fw-normal w-75 ms-3">{{ user?.website }}</span>
+  </div>
+</div>

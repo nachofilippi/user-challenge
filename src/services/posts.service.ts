@@ -15,4 +15,14 @@ export class PostsService {
         .then((json) => json)
     );
   }
+
+  public getPostById(id: string): Observable<Post> {
+    const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
+
+    return from(
+      fetch(url)
+        .then((response) => response.json())
+        .then((json) => json)
+    );
+  }
 }

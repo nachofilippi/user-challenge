@@ -15,4 +15,14 @@ export class UsersService {
         .then((json) => json)
     );
   }
+
+  public getUserById(id: string): Observable<User> {
+    const url = `https://jsonplaceholder.typicode.com/users/${id}`;
+
+    return from(
+      fetch(url)
+        .then((response) => response.json())
+        .then((json) => json)
+    );
+  }
 }

@@ -7,6 +7,13 @@ import { headerLinks } from './header.config';
   selector: 'app-header',
   templateUrl: './header.component.html',
   imports: [CommonModule, RouterModule],
+  styles: [
+    `
+      .navbar {
+        z-index: 10;
+      }
+    `,
+  ],
 })
 export class HeaderComponent {
   public readonly headerLinks = headerLinks;

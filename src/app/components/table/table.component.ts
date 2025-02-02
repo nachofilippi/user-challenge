@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Table } from './table.model';
 
@@ -10,4 +10,10 @@ import { Table } from './table.model';
 })
 export class TableComponent {
   @Input() public data?: Table;
+
+  @Output() public openModal = new EventEmitter<string>();
+
+  openDialog(id: string): void {
+    this.openModal.emit(id);
+  }
 }

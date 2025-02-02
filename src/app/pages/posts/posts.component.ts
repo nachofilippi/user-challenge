@@ -2,32 +2,37 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
-import { takeUntil } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 import { UnsubscribeService } from '../../../services/unsubscribe.service';
 import { formatPostTable } from '../../components/table/table.helper';
 import { Table } from '../../components/table/table.model';
 import { PostsService } from '../../../services/posts.service';
-import { CommonModule } from '@angular/common';
-import { TableModule } from '../../components/table/table.module';
 import { Post } from '../../../models/post.model';
-import { SearchBarComponent } from '../../components/searchbar/searchbar.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from '../../components/modal/modal.component';
 
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
-  imports: [TableModule, CommonModule, SearchBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PostsComponent {
+  @ViewChild('modalPostDetails') modalPostDetails!: TemplateRef<any>;
+
   public loadingTable = true;
   public table?: Table;
   public originalTable?: Post[];
+  public post$?: Observable<Post>;
 
   constructor(
     private postsService: PostsService,
     private readonly unsubscribe$: UnsubscribeService,
-    private cdt: ChangeDetectorRef
+    private cdt: ChangeDetectorRef,
+    public dialog: MatDialog
   ) {}
 
   public ngOnInit() {
@@ -56,5 +61,24 @@ export class PostsComponent {
       ? formatPostTable(tableFiltered)
       : undefined;
     this.cdt.detectChanges();
+  }
+
+  /**
+   * Open the post details modal and pass the post id to the service to get the post details
+   * @param id string
+   * @returns void
+   */
+  openPostDetails(id: string): void {
+    this.post$ = this.postsService
+      .getPostById(id)
+      .pipe(takeUntil(this.unsubscribe$));
+
+    this.dialog.open(ModalComponent, {
+      data: {
+        template: this.modalPostDetails,
+        title: 'Post Details',
+      },
+      width: '100%',
+    });
   }
 }

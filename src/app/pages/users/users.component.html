@@ -19,7 +19,30 @@
       </div>
     </ng-container>
     <ng-template #dataTable>
-      <app-table [data]="table"></app-table>
+      <app-table
+        [data]="table"
+        (openModal)="openUserDetails($event)"
+      ></app-table>
     </ng-template>
   </div>
 </div>
+
+<ng-template #modalUserDetails>
+  <ng-container *ngIf="user$ | async as user; else loading">
+    <div mat-dialog-content class="d-flex p-4">
+      <app-user-details [user]="user"></app-user-details>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div
+      class="align-content-center d-flex h-100 justify-content-center overflow-hidden mt-3"
+    >
+      <div
+        class="align-self-center d-flex justify-content-center spinner-border"
+        role="status"
+      >
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>

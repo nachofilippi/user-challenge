@@ -1,0 +1,9 @@
+<div mat-dialog-title class="d-flex align-items-end">
+  <div class="fs-3 d-flex gap-2 align-items-center">
+    <div>{{ data.title }}</div>
+  </div>
+</div>
+<ng-container *ngTemplateOutlet="data.template"></ng-container>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+</div>

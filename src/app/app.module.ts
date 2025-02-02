@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { UnsubscribeService } from '../services/unsubscribe.service';
-import { HeaderComponent } from './components/header/header.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [],
@@ -13,6 +13,7 @@ import { HeaderComponent } from './components/header/header.component';
     CommonModule,
     RouterModule.forRoot([]),
     AppComponent,
+    BrowserAnimationsModule,
   ],
   providers: [UnsubscribeService],
 })

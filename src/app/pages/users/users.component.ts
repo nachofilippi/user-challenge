@@ -3,32 +3,38 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  ViewChild,
+  TemplateRef,
 } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
-import { TableModule } from '../../components/table/table.module';
 import { UnsubscribeService } from '../../../services/unsubscribe.service';
 import { takeUntil } from 'rxjs';
 import { Table } from '../../components/table/table.model';
-import { formatUserTable } from '../../components/table/table.helper';
-import { CommonModule } from '@angular/common';
-import { SearchBarComponent } from '../../components/searchbar/searchbar.component';
+import { formatUsersTable } from '../../components/table/table.helper';
 import { User } from '../../../models/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  imports: [TableModule, CommonModule, SearchBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class UsersComponent implements OnInit {
+  @ViewChild('modalUserDetails') modalUserDetails!: TemplateRef<any>;
+
   public loadingTable = true;
   public table?: Table;
   public originalTable?: User[];
+  public user$?: Observable<User>;
 
   constructor(
     private usersService: UsersService,
     private readonly unsubscribe$: UnsubscribeService,
-    private cdt: ChangeDetectorRef
+    private cdt: ChangeDetectorRef,
+    public dialog: MatDialog
   ) {}
 
   public ngOnInit() {
@@ -37,7 +43,7 @@ export class UsersComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((users) => {
         this.originalTable = users;
-        this.table = formatUserTable(users);
+        this.table = formatUsersTable(users);
         this.loadingTable = false;
         this.cdt.markForCheck();
       });
@@ -54,8 +60,22 @@ export class UsersComponent implements OnInit {
         field.name.toLowerCase().includes(searchValue.toLowerCase())
       ) || [];
     this.table = tableFiltered.length
-      ? formatUserTable(tableFiltered)
+      ? formatUsersTable(tableFiltered)
       : undefined;
     this.cdt.detectChanges();
+  }
+
+  openUserDetails(id: string): void {
+    this.user$ = this.usersService
+      .getUserById(id)
+      .pipe(takeUntil(this.unsubscribe$));
+
+    this.dialog.open(ModalComponent, {
+      data: {
+        template: this.modalUserDetails,
+        title: 'User Details',
+      },
+      width: '100%',
+    });
   }
 }
