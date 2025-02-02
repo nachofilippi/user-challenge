@@ -8,3 +8,25 @@ td {
   width: 220px;
   background-size: cover;
 }
+
+.table-container {
+  overflow-y: auto;
+  width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}

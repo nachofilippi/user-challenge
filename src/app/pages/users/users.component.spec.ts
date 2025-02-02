@@ -3,6 +3,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UsersComponent } from './users.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { UnsubscribeService } from '../../../services/unsubscribe.service';
+import { UsersService } from '../../../services/users.service';
 
 describe('UsersComponent', () => {
   let component: UsersComponent;
@@ -10,12 +13,10 @@ describe('UsersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        UsersComponent,
-        RouterModule,
-        CommonModule,
-        BrowserAnimationsModule,
-      ],
+      declarations: [UsersComponent],
+      imports: [RouterModule, CommonModule, BrowserAnimationsModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [UnsubscribeService, UsersService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UsersComponent);

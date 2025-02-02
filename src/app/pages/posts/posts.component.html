@@ -4,7 +4,7 @@
     <app-searchbar class="w-50" (search)="filterPosts($event)"></app-searchbar>
   </div>
   <div
-    class="border border-1 overflow-x-auto px-3 py-1 rounded-2 w-100 shadow-sm h-100"
+    class="border border-1 overflow-x-auto px-3 rounded-2 w-100 shadow-sm h-100"
   >
     <ng-container *ngIf="loadingTable; else dataTable">
       <div

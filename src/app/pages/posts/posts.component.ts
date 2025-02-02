@@ -5,7 +5,15 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { Observable, takeUntil } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  of,
+  switchMap,
+  takeUntil,
+  tap,
+  map,
+} from 'rxjs';
 import { UnsubscribeService } from '../../../services/unsubscribe.service';
 import { formatPostTable } from '../../components/table/table.helper';
 import { Table } from '../../components/table/table.model';
@@ -13,6 +21,8 @@ import { PostsService } from '../../../services/posts.service';
 import { Post } from '../../../models/post.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '../../components/modal/modal.component';
+import { UsersService } from '../../../services/users.service';
+import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-posts',
@@ -30,6 +40,7 @@ export class PostsComponent {
 
   constructor(
     private postsService: PostsService,
+    private usersService: UsersService,
     private readonly unsubscribe$: UnsubscribeService,
     private cdt: ChangeDetectorRef,
     public dialog: MatDialog
@@ -69,9 +80,21 @@ export class PostsComponent {
    * @returns void
    */
   openPostDetails(id: string): void {
-    this.post$ = this.postsService
-      .getPostById(id)
-      .pipe(takeUntil(this.unsubscribe$));
+    this.post$ = this.postsService.getPostById(id).pipe(
+      switchMap((post: Post) =>
+        combineLatest([
+          this.usersService.getUserById(post.userId),
+          of(post),
+        ]).pipe(
+          tap(([user, post]: [User, Post]) => {
+            post.user = user;
+          }),
+          map(([_user, post]) => post),
+          takeUntil(this.unsubscribe$)
+        )
+      ),
+      takeUntil(this.unsubscribe$)
+    );
 
     this.dialog.open(ModalComponent, {
       data: {
