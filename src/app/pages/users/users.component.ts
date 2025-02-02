@@ -65,6 +65,11 @@ export class UsersComponent implements OnInit {
     this.cdt.detectChanges();
   }
 
+  /**
+   * Open a modal with the user details using the user id as parameter to get the user data
+   * @param id string
+   * @returns void
+   */
   openUserDetails(id: string): void {
     this.user$ = this.usersService
       .getUserById(id)
